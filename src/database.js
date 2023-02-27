@@ -38,4 +38,17 @@ export class Database {
         this.#persist()
         return data
     }
+    selectById(table, id) {
+        let data = this.#database[table] ?? []
+        return data.filter(e => e.id == id)[0]
+    }
+    update(table, id, data) {
+        const { title, description } = data
+        const index = this.#database[table].findIndex(e => e.id == id)
+        if (index > -1) {
+            this.#database[table][index].title = title ? title : this.#database[table][index].title
+            this.#database[table][index].description = description ? description : this.#database[table][index].description
+            this.#persist()
+        }
+    }
 }
