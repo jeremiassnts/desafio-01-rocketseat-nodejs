@@ -48,6 +48,7 @@ export class Database {
         if (index > -1) {
             this.#database[table][index].title = title ? title : this.#database[table][index].title
             this.#database[table][index].description = description ? description : this.#database[table][index].description
+            this.#database[table][index].updated_at = new Date()
             this.#persist()
         }
     }
@@ -55,6 +56,14 @@ export class Database {
         const index = this.#database[table].findIndex(e => e.id == id)
         if (index > -1) {
             this.#database[table].splice(index, 1)
+            this.#persist()
+        }
+    }
+    markAsComplete(table, id){
+        const index = this.#database[table].findIndex(e => e.id == id)
+        if (index > -1) {
+            this.#database[table][index].completed_at = this.#database[table][index].completed_at ? null : new Date()
+            this.#database[table][index].updated_at = new Date()
             this.#persist()
         }
     }
